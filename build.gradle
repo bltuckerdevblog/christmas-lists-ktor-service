@@ -56,5 +56,11 @@ dependencies {
 
     compile "io.ktor:ktor-server-core:$ktor_version"
     compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-locations:$ktor_version"
+
     compile "ch.qos.logback:logback-classic:1.2.1"
+
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+
 }

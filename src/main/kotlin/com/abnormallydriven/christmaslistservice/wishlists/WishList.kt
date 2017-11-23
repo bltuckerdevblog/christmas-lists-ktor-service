@@ -2,7 +2,7 @@ package com.abnormallydriven.christmaslistservice.wishlists
 
 class WishList(val id : Long){
 
-    private val items: MutableList<WishListItem> = MutableList()
+    private val items: MutableList<WishListItem> = mutableListOf()
 
 
     fun addItem(item: WishListItem){
