@@ -8,9 +8,11 @@ import io.ktor.locations.put
 import io.ktor.response.respond
 import io.ktor.routing.Route
 
-fun Route.userResource(){
+fun Route.userResource(userDao :UserDao){
     get<UserResource>{
         call.respond(HttpStatusCode.NotImplemented, "{userId: 1, name: \"Somebody\"}")
+
+
 
     }
 

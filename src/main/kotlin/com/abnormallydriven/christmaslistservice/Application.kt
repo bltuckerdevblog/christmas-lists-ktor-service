@@ -1,5 +1,6 @@
 package com.abnormallydriven.christmaslistservice
 
+import com.abnormallydriven.christmaslistservice.users.UserDao
 import com.abnormallydriven.christmaslistservice.users.userResource
 import com.abnormallydriven.christmaslistservice.users.usersResource
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListResource
@@ -7,10 +8,8 @@ import com.abnormallydriven.christmaslistservice.wishlists.userWishListsResource
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
 import io.ktor.application.install
-import io.ktor.features.CORS
-import io.ktor.features.CallLogging
-import io.ktor.features.Compression
-import io.ktor.features.DefaultHeaders
+import io.ktor.features.*
+import io.ktor.gson.gson
 import io.ktor.http.HttpMethod
 import io.ktor.locations.Locations
 import io.ktor.locations.handle
@@ -37,16 +36,25 @@ class UserWishListResource(val userId: Long, val wishlistId: Long)
 
 fun Application.module() {
 
+    val userDao = UserDao()
+
+
+
     install(DefaultHeaders){
         header("Seasonal-Greeting", "Merry Christmas")
+    }
+    install(ContentNegotiation){
+        gson{
+            setPrettyPrinting()
+        }
     }
     install(CORS)
     install(CallLogging)
     install(Compression)
     install(Locations)
     install(Routing) {
-        usersResource()
-        userResource()
+        usersResource(userDao)
+        userResource(userDao)
         userWishListsResource()
         userWishListResource()
     }

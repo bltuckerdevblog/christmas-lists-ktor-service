@@ -6,13 +6,19 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.*
 import io.ktor.locations.*
+import io.ktor.request.receive
+import io.ktor.util.ValuesMap
 
-fun Route.usersResource(){
+fun Route.usersResource(userDao: UserDao){
     get<UsersResource> {
-        call.respond(HttpStatusCode.NotImplemented, "{usersResource: []}")
+        call.respond(userDao.getAllUsers())
     }
     post<UsersResource> {
-        call.respond(HttpStatusCode.NotImplemented, "")
+        val dto = call.receive<User>()
+
+        val createdUser = userDao.createUser(dto.name, dto.isNice)
+
+        call.respond(createdUser)
     }
 
 }

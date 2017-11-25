@@ -2,7 +2,7 @@ group 'com.abnormallydriven.christmaslists'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.60'
+    ext.kotlin_version = '1.1.61'
     ext.ktor_version = '0.9.0'
 
     repositories {
@@ -12,13 +12,24 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
     }
 }
 
+
+apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'kotlin'
+
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+}
 
 mainClassName = "com.abnormallydriven.christmaslistservice.ApplicationKt"
 
@@ -41,6 +52,7 @@ compileTestKotlin {
 
 repositories {
     mavenCentral()
+    maven { url "http://dl.bintray.com/jetbrains/spek" }
     maven { url  "http://dl.bintray.com/kotlin/ktor" }
     maven { url "https://dl.bintray.com/kotlin/kotlinx" }
 }
@@ -57,10 +69,15 @@ dependencies {
     compile "io.ktor:ktor-server-core:$ktor_version"
     compile "io.ktor:ktor-server-netty:$ktor_version"
     compile "io.ktor:ktor-locations:$ktor_version"
+    compile "io.ktor:ktor-gson:$ktor_version"
+
+
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
 
     compile "ch.qos.logback:logback-classic:1.2.1"
 
-    // https://mvnrepository.com/artifact/com.h2database/h2
-    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
-
+    // https://mvnrepository.com/artifact/org.jetbrains.spek/spek-api
+    testCompile group: 'org.jetbrains.spek', name: 'spek-api', version: '1.1.5'
+    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
 }
