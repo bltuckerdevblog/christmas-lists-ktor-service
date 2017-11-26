@@ -5,7 +5,6 @@ import com.abnormallydriven.christmaslistservice.users.userResource
 import com.abnormallydriven.christmaslistservice.users.usersResource
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListResource
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListsResource
-import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
 import io.ktor.application.install
 import io.ktor.features.*
@@ -34,35 +33,31 @@ class UserWishListsResource(val userId: Long)
 class UserWishListResource(val userId: Long, val wishlistId: Long)
 
 
-fun Application.module() {
-
-    val userDao = UserDao()
-
-
-
-    install(DefaultHeaders){
-        header("Seasonal-Greeting", "Merry Christmas")
-    }
-    install(ContentNegotiation){
-        gson{
-            setPrettyPrinting()
-        }
-    }
-    install(CORS)
-    install(CallLogging)
-    install(Compression)
-    install(Locations)
-    install(Routing) {
-        usersResource(userDao)
-        userResource(userDao)
-        userWishListsResource()
-        userWishListResource()
-    }
-
-}
-
 fun main(args: Array<String>) {
-    embeddedServer(Netty, 8080, watchPaths = listOf("ApplicationKt"), module = Application::module).start()
+    embeddedServer(Netty, 8080){
+        val userDao = UserDao()
+
+
+
+        install(DefaultHeaders){
+            header("Seasonal-Greeting", "Merry Christmas")
+        }
+        install(ContentNegotiation){
+            gson{
+                setPrettyPrinting()
+            }
+        }
+        install(CORS)
+        install(CallLogging)
+        install(Compression)
+        install(Locations)
+        install(Routing) {
+            usersResource(userDao)
+            userResource(userDao)
+            userWishListsResource()
+            userWishListResource()
+        }
+    }.start(true)
 }
 
 //Needed because the locations feature doesnt do this yet.
