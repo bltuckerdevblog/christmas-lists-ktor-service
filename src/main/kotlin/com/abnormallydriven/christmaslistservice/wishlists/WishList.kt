@@ -1,6 +1,8 @@
 package com.abnormallydriven.christmaslistservice.wishlists
 
-class WishList(val id : Long){
+class WishList(val id : Long,
+               val userId : Long,
+               val name : String){
 
     private val items: MutableList<WishListItem> = mutableListOf()
 
