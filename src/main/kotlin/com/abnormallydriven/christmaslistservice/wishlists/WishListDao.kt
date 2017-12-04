@@ -25,15 +25,23 @@ class WishListDao(private val userDao: UserDao) {
         return wishlistStore[id]
     }
 
-    fun addItem(id : Long, itemName : String){
+    fun addItem(id: Long, itemName: String) {
         wishlistStore[id]?.addItem(WishListItem(itemName)) ?: throw RuntimeException("Invalid wishlist id")
     }
 
-    fun removeItem(id: Long, itemName: String){
+    fun removeItem(id: Long, itemName: String) {
         val wishList = wishlistStore[id] ?: throw RuntimeException("Invalid wishlist id")
 
         wishList.removeItem(WishListItem(itemName))
 
+    }
+
+    fun getUserWishLists(userId: Long): List<WishList> {
+        return wishlistStore.filterKeys {
+            it == userId
+        }
+        .values
+        .toList()
     }
 
 }

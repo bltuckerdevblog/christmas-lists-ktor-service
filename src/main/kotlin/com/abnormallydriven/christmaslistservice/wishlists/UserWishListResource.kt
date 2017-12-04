@@ -9,14 +9,16 @@ import io.ktor.locations.post
 import io.ktor.response.respond
 import io.ktor.routing.Route
 
-fun Route.userWishListResource(){
+fun Route.userWishListResource(wishListDao: WishListDao){
     get<UserWishListResource>{
         call.respond(HttpStatusCode.NotImplemented, "{items: []}")
 
     }
+
     post<UserWishListResource>{
         call.respond(HttpStatusCode.NotImplemented, "{name : \"item name\"}")
     }
+
     delete<UserWishListResource>{
         call.respond(HttpStatusCode.NotImplemented, "")
     }

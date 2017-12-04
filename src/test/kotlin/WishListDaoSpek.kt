@@ -4,7 +4,6 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class WishListDaoSpek : Spek({

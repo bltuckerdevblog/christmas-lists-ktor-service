@@ -3,6 +3,7 @@ package com.abnormallydriven.christmaslistservice
 import com.abnormallydriven.christmaslistservice.users.UserDao
 import com.abnormallydriven.christmaslistservice.users.userResource
 import com.abnormallydriven.christmaslistservice.users.usersResource
+import com.abnormallydriven.christmaslistservice.wishlists.WishListDao
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListResource
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListsResource
 import io.ktor.application.ApplicationCall
@@ -36,7 +37,7 @@ class UserWishListResource(val userId: Long, val wishlistId: Long)
 fun main(args: Array<String>) {
     embeddedServer(Netty, 8080){
         val userDao = UserDao()
-
+        val wishListDao = WishListDao(userDao)
 
 
         install(DefaultHeaders){
@@ -54,8 +55,8 @@ fun main(args: Array<String>) {
         install(Routing) {
             usersResource(userDao)
             userResource(userDao)
-            userWishListsResource()
-            userWishListResource()
+            userWishListsResource(wishListDao)
+            userWishListResource(wishListDao)
         }
     }.start(true)
 }
