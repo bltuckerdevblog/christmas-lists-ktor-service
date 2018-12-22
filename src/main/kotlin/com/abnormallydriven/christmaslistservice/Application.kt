@@ -6,21 +6,20 @@ import com.abnormallydriven.christmaslistservice.users.usersResource
 import com.abnormallydriven.christmaslistservice.wishlists.WishListDao
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListResource
 import com.abnormallydriven.christmaslistservice.wishlists.userWishListsResource
-import io.ktor.application.ApplicationCall
+import freemarker.cache.ClassTemplateLoader
 import io.ktor.application.install
 import io.ktor.features.*
+import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
-import io.ktor.http.HttpMethod
 import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Location
 import io.ktor.locations.Locations
-import io.ktor.locations.handle
-import io.ktor.pipeline.PipelineContext
-import io.ktor.routing.Route
 import io.ktor.routing.Routing
-import io.ktor.routing.method
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+
+@Location("/")
+class UserPage()
 
 @Location("/users")
 class UsersResource()
@@ -50,11 +49,16 @@ fun main(args: Array<String>) {
                 setPrettyPrinting()
             }
         }
+        install(FreeMarker){
+            templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
+        }
         install(CORS)
         install(CallLogging)
         install(Compression)
         install(Locations)
         install(Routing) {
+
+            userPage(userDao)
             usersResource(userDao)
             userResource(userDao)
             userWishListsResource(wishListDao)
@@ -62,12 +66,3 @@ fun main(args: Array<String>) {
         }
     }.start(true)
 }
-
-//Needed because the locations feature doesnt do this yet.
-//inline fun <reified T : Any> Route.delete(noinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit): Location {
-//    return Location(T::class) {
-//        method(HttpMethod.Delete) {
-//            handle(body)
-//        }
-//    }
-//}
