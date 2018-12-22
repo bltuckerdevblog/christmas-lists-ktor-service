@@ -11,9 +11,10 @@ import io.ktor.application.install
 import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.http.HttpMethod
+import io.ktor.locations.KtorExperimentalLocationsAPI
+import io.ktor.locations.Location
 import io.ktor.locations.Locations
 import io.ktor.locations.handle
-import io.ktor.locations.location
 import io.ktor.pipeline.PipelineContext
 import io.ktor.routing.Route
 import io.ktor.routing.Routing
@@ -21,19 +22,20 @@ import io.ktor.routing.method
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
-@location("/users")
+@Location("/users")
 class UsersResource()
 
-@location("/users/{userId}")
+@Location("/users/{userId}")
 class UserResource(val userId: Long)
 
-@location("/users/{userId}/wishlists")
+@Location("/users/{userId}/wishlists")
 class UserWishListsResource(val userId: Long)
 
-@location("/users/{userId}/wishlist/{wishlistId}")
+@Location("/users/{userId}/wishlist/{wishlistId}")
 class UserWishListResource(val userId: Long, val wishlistId: Long)
 
 
+@KtorExperimentalLocationsAPI
 fun main(args: Array<String>) {
     embeddedServer(Netty, 8080){
         val userDao = UserDao()
@@ -62,10 +64,10 @@ fun main(args: Array<String>) {
 }
 
 //Needed because the locations feature doesnt do this yet.
-inline fun <reified T : Any> Route.delete(noinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit): Route {
-    return location(T::class) {
-        method(HttpMethod.Delete) {
-            handle(body)
-        }
-    }
-}
+//inline fun <reified T : Any> Route.delete(noinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit): Location {
+//    return Location(T::class) {
+//        method(HttpMethod.Delete) {
+//            handle(body)
+//        }
+//    }
+//}
