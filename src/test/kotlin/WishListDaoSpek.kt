@@ -4,7 +4,7 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import kotlin.test.assertTrue
+import org.junit.Assert.assertTrue
 
 class WishListDaoSpek : Spek({
 
@@ -21,7 +21,7 @@ class WishListDaoSpek : Spek({
                 hadException = true
             }
             it("should throw a runtime exception") {
-                assertTrue { hadException }
+                assertTrue(hadException)
             }
         }
 

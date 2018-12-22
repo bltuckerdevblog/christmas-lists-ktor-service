@@ -2,8 +2,8 @@ import com.abnormallydriven.christmaslistservice.users.UserDao
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 
 class UserDaoSpek : Spek( {
 
