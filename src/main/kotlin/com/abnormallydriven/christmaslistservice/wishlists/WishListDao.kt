@@ -13,16 +13,26 @@ class WishListDao(private val userDao: UserDao) {
         val userById = userDao.getUserById(userId) ?: throw RuntimeException("User must exist before creating wishlist")
 
         val wishList = WishList(wishlistIdSequence.getAndIncrement(),
-                userId,
+                userById.id,
                 wishlistName)
 
-        wishlistStore.put(wishList.id, wishList)
+        wishlistStore[wishList.id] = wishList
 
         return wishList
     }
 
     fun getWishListById(id: Long): WishList? {
         return wishlistStore[id]
+    }
+
+    fun createChristmasWishList(userId: Long): WishList {
+        return createWishList("Christmas List", userId)
+    }
+
+    fun getChristmasWishList(userId: Long): WishList?{
+        return wishlistStore.values
+                .toList()
+                .firstOrNull { list: WishList -> list.userId == userId && list.name == "Christmas List"}
     }
 
     fun addItem(id: Long, itemName: String) {

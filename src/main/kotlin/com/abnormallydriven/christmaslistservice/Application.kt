@@ -21,17 +21,20 @@ import io.ktor.server.netty.Netty
 @Location("/")
 class UserPage()
 
+@Location("/users/{userId}/christmaslist")
+data class ChristmasListPage(val userId: Long)
+
 @Location("/users")
 class UsersResource()
 
 @Location("/users/{userId}")
-class UserResource(val userId: Long)
+data class UserResource(val userId: Long)
 
 @Location("/users/{userId}/wishlists")
-class UserWishListsResource(val userId: Long)
+data class UserWishListsResource(val userId: Long)
 
 @Location("/users/{userId}/wishlist/{wishlistId}")
-class UserWishListResource(val userId: Long, val wishlistId: Long)
+data class UserWishListResource(val userId: Long, val wishlistId: Long)
 
 
 @KtorExperimentalLocationsAPI
@@ -58,7 +61,8 @@ fun main(args: Array<String>) {
         install(Locations)
         install(Routing) {
 
-            userPage(userDao)
+            userPage(userDao, wishListDao)
+            christmasListPage(userDao, wishListDao)
             usersResource(userDao)
             userResource(userDao)
             userWishListsResource(wishListDao)
