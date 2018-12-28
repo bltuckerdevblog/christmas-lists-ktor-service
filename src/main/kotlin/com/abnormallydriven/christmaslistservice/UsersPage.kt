@@ -13,7 +13,7 @@ import io.ktor.routing.Route
 
 fun Route.userPage(userDao: UserDao, wishListDao: WishListDao){
     get<UserPage>{
-        call.respond(FreeMarkerContent("index.ftl", mapOf("model" to IndexPageModel(listOf()))))
+        call.respond(FreeMarkerContent("index.ftl", mapOf("model" to IndexPageModel(userDao.getAllUsers()))))
     }
 
     post<UserPage> {
@@ -25,7 +25,7 @@ fun Route.userPage(userDao: UserDao, wishListDao: WishListDao){
             wishListDao.createChristmasWishList(createdUser.id)
             call.respond(FreeMarkerContent("index.ftl", mapOf("model" to IndexPageModel(userDao.getAllUsers()))))
         } else {
-            call.respond(FreeMarkerContent("index.ftl", mapOf("model" to IndexPageModel(listOf(), "Invalid user data entered"))))
+            call.respond(FreeMarkerContent("index.ftl", mapOf("model" to IndexPageModel(userDao.getAllUsers(), "Invalid user data entered"))))
         }
 
     }
